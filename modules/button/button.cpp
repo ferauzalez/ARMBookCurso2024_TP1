@@ -3,6 +3,9 @@
 #include "button.h"
 #include "microcontroller.h"
 
+//=====[Declaration of private defines]========================================
+#define TIME_BETWEEN_COUNTDOWNS 1000ms
+
 //=====[Declaration and initialization of private global objects]===============
 static DigitalIn selectModeButton   (D7);
 static DigitalIn increaseButton     (D6);
@@ -12,18 +15,10 @@ static DigitalIn playPauseButton    (D4);
 //=====[Declaration and initialization of private global variables]=============
 static buttons_t currentInput;
 
+//=====[Declarations (prototypes) of private functions]========================
+static void readButtons();
+
 //=====[Implementations of public functions]===================================
-bool itIsNecessaryToMakeATransition() {
-    readButtons();
-
-    if (currentInput == NONE_BUTTON_SELECTED) {
-        return false;
-    } else {
-        microcontrollerDelay();
-
-        return true;
-    }
-}
 
 void buttonsInit() {
     selectModeButton.mode(PullDown);
@@ -32,7 +27,15 @@ void buttonsInit() {
     playPauseButton.mode(PullDown);
 }
 
-buttons_t readButtons() {
+buttons_t readCurrentInput() {
+    readButtons();
+    microcontrollerDelay();
+
+    return currentInput;
+}
+
+//=====[Implementations of private functions]==================================
+static void readButtons() {
     if (selectModeButton == !0) {
         currentInput = BUTTON_SELECT_MODE;
     } else if (increaseButton == !0) {
@@ -44,10 +47,4 @@ buttons_t readButtons() {
     } else {
         currentInput = NONE_BUTTON_SELECTED;
     }
-
-    return currentInput;
-}
-
-buttons_t readCurrentInput() {
-    return currentInput;
 }

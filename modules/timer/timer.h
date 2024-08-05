@@ -17,3 +17,4 @@ modes_t readModeActive                                  ();
 void    updateMode                                      ();
 void    updateInitialValuesOfActiveMode                 ();
 void    decrementTemporalValuesOfActiveMode             ();
+void    startTimer                                      ();

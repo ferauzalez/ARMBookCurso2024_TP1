@@ -9,6 +9,7 @@ typedef enum {
 } principalMachineStates_t;
 
 //=====[Declarations (prototypes) of public functions]=========================
+void                        startThePrincipalMachine        ();
 void                        updateStateOfprincipalMachine   ();
 principalMachineStates_t    readCurrentState                ();
 bool                        readCountdownState              ();

@@ -1,14 +1,21 @@
 //=====[Libraries]=============================================================
+#include "mbed.h"
 #include "FSM_principal.h"
 #include "button.h"
 #include "UART.h"
 #include "timer.h"
 #include "led.h"
 
+
+using namespace std::chrono;
+
+//=====[Declaration and initialization of private global objects]===============
+static      LowPowerTimer timer;
+
 //=====[Declaration and initialization of private global variables]============
 static      modes_t                     activeMode;
-static      principalMachineStates_t    currentState    = STATE_WAITING;
-static      bool                        countdownActive = false;
+static      principalMachineStates_t    currentState;
+static      bool                        countdownActive;
 
 
 //=====[Declarations (prototypes) of private functions]========================
@@ -17,6 +24,21 @@ static principalMachineStates_t determineNewStateFromWaitingState   (buttons_t i
 static principalMachineStates_t determineNewStateFromSelectModeState(buttons_t input);
 
 //=====[Implementations of public functions]===================================
+bool readCountdownState() {
+    return countdownActive;
+}
+
+void setCountdownState(bool countdownState) {
+    countdownActive = countdownState;
+}
+
+void startThePrincipalMachine() {
+    currentState    = STATE_WAITING;
+    countdownActive = false;
+
+    timer.start();
+}
+
 void updateStateOfprincipalMachine() {
     buttons_t                   input   = readCurrentInput();
     principalMachineStates_t    newState;
@@ -60,14 +82,6 @@ principalMachineStates_t readCurrentState() {
     return currentState;
 }
 
-bool readCountdownState() {
-    return countdownActive;
-}
-
-void setCountdownState(bool countdownState) {
-    countdownActive = countdownState;
-}
-
 //=====[Implementations of private functions]==================================
 static void principalMachineOutputs() {
     switch (currentState) {
@@ -86,15 +100,19 @@ static void principalMachineOutputs() {
             break;
         case STATE_COUNTDOWN:
             setCountdownState(true);
-            checkValuesOfCurrentModeAndReassignIfCorresponds();
-            updateLEDGroup();
-            decrementTemporalValuesOfActiveMode();
-            display();
+    
+            if (duration_cast<milliseconds>(timer.elapsed_time()).count() >= 1000) { //Se lee el valor del objeto timer
+                checkValuesOfCurrentModeAndReassignIfCorresponds();
+                updateLEDGroup();
+                decrementTemporalValuesOfActiveMode();
+                display();
+
+                timer.reset();
+            }
             break;
         case STATE_WAITING:
         default:
             setCountdownState(false);
-            display();
             break;
     }
 }

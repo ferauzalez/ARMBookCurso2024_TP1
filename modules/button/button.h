@@ -8,7 +8,5 @@ typedef enum {
 } buttons_t;
 
 //=====[Declarations (prototypes) of public functions]=========================
-bool        itIsNecessaryToMakeATransition  ();
 void        buttonsInit                     ();
-buttons_t   readButtons                     ();
 buttons_t   readCurrentInput                ();
