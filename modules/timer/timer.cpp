@@ -109,7 +109,7 @@ modes_t readModeActive() {
     return currentMode;
 }
 
-void updateMode() {
+void updateMode() { // el modo se cambia cuando el usuario presiona el botón de selección
     switch (currentMode){
         case MODE_EXERCISE:     
             currentMode = MODE_REST;
@@ -125,7 +125,9 @@ void updateMode() {
             break;
     }
 
-    copyInitialToTemporalValuesOfTheActiveMode(); // I notice that is necessary to make this call at least for the case when the first button pressed is BUTTON_SELECT_MODE 
+    copyInitialToTemporalValuesOfTheActiveMode(); // I notice that is necessary to make this call at least
+                                                  // for the case when the first button pressed is 
+                                                  // BUTTON_SELECT_MODE 
 }
 
 void updateInitialValuesOfActiveMode() {

@@ -38,7 +38,9 @@ static void blinkLEDs(modes_t mode) {
             restLED       = !restLED;
             repetitionLED = false;
             break;
-        default: // Switch case shouldn't come here. In that case, all three LEDs would blinking for make the error more noticeable.
+        default: // Switch case shouldn't come here.
+                 // In that case, all three LEDs would blinking
+                 // for make the error more noticeable.
             exerciseLED   = !exerciseLED;
             restLED       = !restLED;
             repetitionLED = !repetitionLED;
@@ -63,7 +65,9 @@ void changeWhichLEDIsOn(modes_t mode) {
             restLED       = false;
             repetitionLED = true;
             break;
-        default: // Switch case shouldn't come here. In that case, all three LEDs would light up for make the error more noticeable.
+        default: // Switch case shouldn't come here.
+                 // In that case, all three LEDs would light up
+                 // for make the error more noticeable.
             exerciseLED   = true;
             restLED       = true;
             repetitionLED = true;
